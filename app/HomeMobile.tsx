@@ -47,8 +47,8 @@ export default function HomeMobile() {
     <main className="mx-auto min-h-screen w-full max-w-md bg-bg pb-28">
       <div className="sticky top-0 z-30 max-h-[132px] overflow-hidden border-b border-garis bg-kartu/95 backdrop-blur">
         <div className="flex items-center gap-2 px-4 pt-2.5">
-          <p className="sr-only">Warmak A3</p>
           <BrandLogo />
+          <p className="font-display text-xl font-bold text-primer">Warmak A3</p>
           <ShopBadge />
           <SyncBadge />
         </div>
