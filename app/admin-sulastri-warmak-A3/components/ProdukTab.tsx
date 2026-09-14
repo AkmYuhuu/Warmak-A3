@@ -58,6 +58,7 @@ export default function ProdukTab({ filtered, cats, q, setQ, kat, setKat, menipi
         <ProductEditor
           key={editorFor === "baru" ? "baru" : editorFor.id}
           initial={editorFor === "baru" ? undefined : editorFor}
+          cats={cats}
           stage={stage}
           leaving={edT.leaving}
           onDone={onEditorDone}

@@ -6,11 +6,11 @@ import { compressImage, formatRibuan } from "./shared";
 import { useUploadThing } from "@/lib/uploadthing";
 
 // Form tambah/edit produk; di mobile tampil sebagai sheet
-export default function ProductEditor({ initial, stage, leaving, onDone }: { initial?: Product; stage: StageFn; leaving?: boolean; onDone: (saved?: Product) => void }) {
+export default function ProductEditor({ initial, cats = [], stage, leaving, onDone }: { initial?: Product; cats?: string[]; stage: StageFn; leaving?: boolean; onDone: (saved?: Product) => void }) {
   const [nama, setNama] = useState(initial?.nama ?? "");
   const [harga, setHarga] = useState(String(initial?.harga ?? ""));
   const [stok, setStok] = useState(String(initial?.stok ?? ""));
-  const [kategori, setKategori] = useState(initial?.kategori ?? "Sembako");
+  const [kategori, setKategori] = useState(initial?.kategori ?? "");
   const [description, setDescription] = useState(initial?.description ?? initial?.deskripsi ?? "");
   const [expiredAt, setExpiredAt] = useState(initial?.expiredAt ?? "");
   const [foto, setFoto] = useState<string | undefined>(initial?.foto);
@@ -23,11 +23,12 @@ export default function ProductEditor({ initial, stage, leaving, onDone }: { ini
   const [isDiscount, setIsDiscount] = useState(!!initial?.isDiscount);
   const [discountPrice, setDiscountPrice] = useState(String(initial?.discountPrice ?? ""));
   const [discountExpiresAt, setDiscountExpiresAt] = useState(initial?.discountExpiresAt ?? "");
-  const input = "rounded-[14px] border border-garis bg-bg px-3 py-2.5 text-sm outline-none focus:border-primer";
+  const input = "w-full min-w-0 rounded-2xl border border-garis bg-white px-4 py-3 text-sm outline-none placeholder:text-sm focus:border-primer md:rounded-[14px] md:bg-bg md:px-3 md:py-2.5";
+  const saranKategori = Array.from(new Set(["Sembako", ...cats.filter((c) => c !== "Semua"), kategori.trim()].filter(Boolean)));
   return (
     <div className="fixed inset-0 z-50 md:static md:z-auto" role="dialog" aria-label="Form produk">
       <div className={`${leaving ? "backdrop-out" : "backdrop-in"} absolute inset-0 bg-black/40 md:hidden`} onClick={() => onDone()} />
-      <form className={`${leaving ? "sheet-out" : "sheet-in"} absolute inset-x-0 bottom-0 max-h-[92vh] overflow-y-auto rounded-t-[24px] bg-kartu p-4 shadow-float md:static md:mt-2 md:grid md:max-h-none md:grid-cols-2 md:gap-2 md:rounded-[18px] md:border md:border-garis md:p-4 md:shadow-card`}
+      <form className={`${leaving ? "sheet-out" : "sheet-in"} absolute inset-x-0 bottom-0 mx-auto flex max-h-[92vh] w-full max-w-lg flex-col gap-2.5 overflow-x-hidden overflow-y-auto rounded-t-[24px] bg-kartu p-4 pb-24 shadow-float md:static md:mx-0 md:mt-2 md:grid md:max-h-none md:w-auto md:max-w-none md:grid-cols-2 md:gap-2 md:overflow-visible md:rounded-[18px] md:border md:border-garis md:p-4 md:shadow-card`}
         onSubmit={async (e) => {
           e.preventDefault();
           const h = Number(harga), s = Number(stok);
@@ -41,7 +42,7 @@ export default function ProductEditor({ initial, stage, leaving, onDone }: { ini
             ...(initial ?? {}),
             id, nama: nama.trim(),
             slug: initial?.slug ?? nama.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-            kategori, harga: h, stok: Math.floor(s), aktif: initial?.aktif ?? true,
+            kategori: kategori.trim() || "Sembako", harga: h, stok: Math.floor(s), aktif: initial?.aktif ?? true,
             description: description.trim(), deskripsi: description.trim(), expiredAt, foto,
             isPO, poStartAt: isPO ? poStartAt || undefined : undefined, poEndAt: isPO ? poEndAt || undefined : undefined,
             isDiscount, discountPrice: isDiscount ? dp : undefined,
@@ -51,15 +52,17 @@ export default function ProductEditor({ initial, stage, leaving, onDone }: { ini
           stage("product.upsert", saved);
           onDone(saved);
         }}>
-        <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-garis md:hidden" aria-hidden />
+        <div className="mx-auto h-1 w-10 shrink-0 rounded-full bg-garis md:hidden" aria-hidden />
         <p className="font-display text-lg font-semibold md:col-span-2">{initial ? "Edit produk" : "Produk baru"}</p>
-        <p className="text-xs font-bold text-aksen md:col-span-2">Menyimpan menampung ke draft — tekan “Simpan perubahan” di bawah.</p>
+        <p className="rounded-lg border border-aksen/40 bg-aksen/10 p-3 text-xs font-bold leading-snug text-aksen md:col-span-2 md:rounded-none md:border-0 md:bg-transparent md:p-0">Menyimpan sebagai draft — tekan 'Simpan perubahan' di bawah.</p>
         <input value={nama} onChange={(e) => setNama(e.target.value)} placeholder="Nama" className={input} aria-label="Nama" />
-        <input value={kategori} onChange={(e) => setKategori(e.target.value)} placeholder="Kategori" className={input} aria-label="Kategori" />
+        <input value={kategori} onChange={(e) => setKategori(e.target.value)} placeholder="Kategori" list="kategori-saran" autoComplete="off" className={input} aria-label="Kategori" />
+        <datalist id="kategori-saran">{saranKategori.map((c) => <option key={c} value={c} />)}</datalist>
         <input value={formatRibuan(harga)} onChange={(e) => setHarga(e.target.value.replace(/\D/g, ""))} placeholder="Harga" inputMode="numeric" className={input} aria-label="Harga" />
         <input value={stok} onChange={(e) => setStok(e.target.value.replace(/\D/g, ""))} placeholder="Stok" inputMode="numeric" className={input} aria-label="Stok" />
-        <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Deskripsi (wajib tampil di toko)" className={`${input} md:col-span-2`} aria-label="Deskripsi" />
-        <label className="flex items-center gap-2 text-xs font-bold">Expired* <input type="date" value={expiredAt} onChange={(e) => setExpiredAt(e.target.value)} className={`${input} flex-1`} aria-label="Tanggal expired" /></label>
+        <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Deskripsi (wajib tampil di toko)" className={`${input} hidden md:col-span-2 md:block`} aria-label="Deskripsi" />
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Deskripsi produk (wajib tampil di toko)" rows={4} className={`${input} min-h-[100px] resize-y md:hidden`} aria-label="Deskripsi" />
+        <label className="flex flex-col items-start gap-2 text-xs font-bold sm:flex-row sm:items-center"><span className="w-24 shrink-0">Expired*</span><input type="date" value={expiredAt} onChange={(e) => setExpiredAt(e.target.value)} className={`${input} flex-1`} aria-label="Tanggal expired" /></label>
         <div className="rounded-[14px] ring-1 ring-garis">
           <label className="pressable block cursor-pointer px-3 py-2.5 text-xs font-bold">{uploading ? "⏳ Mengunggah…" : "📷 Foto dari album"}
             <input type="file" accept="image/*" className="hidden" disabled={uploading} onChange={async (e) => {
@@ -88,24 +91,24 @@ export default function ProductEditor({ initial, stage, leaving, onDone }: { ini
           <p className="px-3 pb-2 text-[11px] text-teks2">Sisi panjang maks 1600px, JPG/WebP, hasil &lt;500KB.{fotoInfo ? ` Dipakai: ${fotoInfo}.` : ""}</p>
         </div>
         <label className="flex items-center gap-1.5 text-xs font-bold md:col-span-2">
-          <input type="checkbox" checked={isPO} onChange={(e) => setIsPO(e.target.checked)} className="h-4 w-4 accent-[#0C5B40]" /> Jadikan PO Product
+          <input type="checkbox" checked={isPO} onChange={(e) => setIsPO(e.target.checked)} className="h-4 w-4 accent-primer" /> Jadikan PO Product
         </label>
         {isPO && (
           <>
-            <label className="flex items-center gap-2 text-xs font-bold">PO mulai <input type="datetime-local" value={poStartAt} onChange={(e) => setPoStartAt(e.target.value)} className={`${input} flex-1`} /></label>
-            <label className="flex items-center gap-2 text-xs font-bold">PO berakhir <input type="datetime-local" value={poEndAt} onChange={(e) => setPoEndAt(e.target.value)} className={`${input} flex-1`} /></label>
+            <label className="flex flex-col items-start gap-2 text-xs font-bold sm:flex-row sm:items-center"><span className="w-24 shrink-0">PO mulai</span><input type="datetime-local" value={poStartAt} onChange={(e) => setPoStartAt(e.target.value)} className={`${input} flex-1`} /></label>
+            <label className="flex flex-col items-start gap-2 text-xs font-bold sm:flex-row sm:items-center"><span className="w-24 shrink-0">PO berakhir</span><input type="datetime-local" value={poEndAt} onChange={(e) => setPoEndAt(e.target.value)} className={`${input} flex-1`} /></label>
           </>
         )}
         <label className="flex items-center gap-1.5 text-xs font-bold md:col-span-2">
-          <input type="checkbox" checked={isDiscount} onChange={(e) => setIsDiscount(e.target.checked)} className="h-4 w-4 accent-[#0C5B40]" /> Beri diskon
+          <input type="checkbox" checked={isDiscount} onChange={(e) => setIsDiscount(e.target.checked)} className="h-4 w-4 accent-primer" /> Beri diskon
         </label>
         {isDiscount && (
           <>
             <input value={formatRibuan(discountPrice)} onChange={(e) => setDiscountPrice(e.target.value.replace(/\D/g, ""))} placeholder="Harga diskon" inputMode="numeric" className={input} aria-label="Harga diskon" />
-            <label className="flex items-center gap-2 text-xs font-bold">Diskon s/d <input type="datetime-local" value={discountExpiresAt} onChange={(e) => setDiscountExpiresAt(e.target.value)} className={`${input} flex-1`} /></label>
+            <label className="flex flex-col items-start gap-2 text-xs font-bold sm:flex-row sm:items-center"><span className="w-24 shrink-0">Diskon s/d</span><input type="datetime-local" value={discountExpiresAt} onChange={(e) => setDiscountExpiresAt(e.target.value)} className={`${input} flex-1`} /></label>
           </>
         )}
-        <div className="flex gap-2 md:col-span-2">
+        <div className="flex flex-col gap-2 sm:flex-row md:col-span-2">
           <button className="pressable flex-1 rounded-[14px] bg-primer px-3 py-3 text-sm font-extrabold text-white shadow-btn md:flex-none md:px-5">Tampung draft</button>
           <button type="button" onClick={() => onDone()} className="pressable rounded-[14px] px-4 py-3 text-sm font-bold ring-1 ring-garis">Batal</button>
         </div>
