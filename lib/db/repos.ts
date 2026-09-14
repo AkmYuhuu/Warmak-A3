@@ -13,7 +13,6 @@ import {
 import type { BackupData, Expense, Product, ShopSettings, Transaction } from "./schema";
 import { NEXT_STATUS } from "./schema";
 import { syncRun } from "@/lib/sync/status";
-import seed from "./seed.json";
 
 const COL = "warmak";
 
@@ -269,20 +268,7 @@ export async function fetchProduct(id: string): Promise<Product | undefined> {
   return { ...(d.data() as object), id } as Product;
 }
 
-// ── seed + backup lewat cloud ───────────────────────────────────────────────
-export async function seedIfEmpty(): Promise<boolean> {
-  const s = await syncRun(() => getDocs(query(collection(fsClient(), COL), limit(1))));
-  if (!s.empty) return false;
-  const now = Date.now();
-  await syncRun(async () => {
-    await Promise.all((seed as Product[]).map((p) =>
-      setDoc(doc(fsClient(), COL, `product_${p.id}`), { ...p, updatedAt: now }),
-    ));
-    await setDoc(doc(fsClient(), COL, "meta_settings"), { ...DEFAULT_SETTINGS });
-  });
-  return true;
-}
-
+// ── backup lewat cloud ────────────────────────────────────────────────────
 export async function exportBackup() {
   const s = await syncRun(() => getDocs(collection(fsClient(), COL)));
   const products: Product[] = [];

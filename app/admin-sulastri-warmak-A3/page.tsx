@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
-  useLive, seedIfEmpty,
+  useLive,
 } from "@/lib/db/repos";
 import { useDrafts } from "@/lib/content/draft";
 import { useMountedTransition } from "@/lib/anim/useMountedTransition";
@@ -73,7 +73,6 @@ export default function AdminPage() {
   const [confirmBuang, setConfirmBuang] = useState(false);
 
   useEffect(() => {
-    seedIfEmpty().catch(() => null);
     setIsDesktopChart(window.matchMedia("(min-width: 768px)").matches);
     import("chart.js").then(({ Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Tooltip, Legend }) => {
       Chart.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Tooltip, Legend);
