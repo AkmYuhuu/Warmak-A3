@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   icons: { apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }] },
 };
 
-export const viewport: Viewport = { themeColor: "#0c5b40" };
+export const viewport: Viewport = { themeColor: "#0c5b40", width: "device-width", initialScale: 1 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
