@@ -36,7 +36,7 @@ export default function ProdukTab({ filtered, cats, q, setQ, kat, setKat, menipi
   return (
     <div className="fade-up">
       <TabHead title="Produk & Stok" sub={`${filtered.length} barang`} />
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-center">
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari produk…"
           className={`${input} min-w-40 flex-1`} aria-label="Cari" />
         <select value={kat} onChange={(e) => setKat(e.target.value)} className={`${input} hidden md:block`} aria-label="Kategori">
