@@ -13,9 +13,9 @@ export default function BantuanPage() {
           <p className="mt-1 leading-relaxed text-teks2">Pilih barang → Tambah → Checkout → Kirim ke WA. Pilih Ambil atau Antar, lalu tulis nama dan alamat.</p>
         </div>
         <div className="rounded-[18px] border border-garis bg-kartu p-4 shadow-card">
-          <p className="font-extrabold">Hubungi warung</p>
+          <p className="font-extrabold">Hubungi toko</p>
           <a href="https://wa.me/6281234567890" target="_blank" rel="noopener"
-            className="pressable mt-2 block rounded-[14px] bg-primer py-3 text-center text-sm font-extrabold text-white shadow-btn">Chat WA Warung</a>
+            className="pressable mt-2 block rounded-[14px] bg-primer py-3 text-center text-sm font-extrabold text-white shadow-btn">Chat WA Toko</a>
         </div>
         <div className="rounded-[18px] border border-garis bg-kartu p-4 shadow-card">
           <SfxToggle />

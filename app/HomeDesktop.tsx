@@ -93,7 +93,7 @@ export default function HomeDesktop() {
             className="ml-auto h-11 w-[480px] rounded-[14px] border border-garis bg-bg px-4 text-sm outline-none focus:border-primer" aria-label="Cari produk" />
           <a href="https://wa.me/6281234567890" target="_blank" rel="noopener"
             className="pressable rounded-[14px] px-4 py-2.5 text-sm font-bold text-primer ring-1 ring-primer">
-            WA Warung
+            WA Toko
           </a>
           <button onClick={() => setCartOpen(true)}
             className="pressable btn-lift relative rounded-[14px] bg-primer px-4 py-2.5 text-sm font-extrabold text-white shadow-btn">

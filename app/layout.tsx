@@ -8,9 +8,26 @@ import FloatingCart from "@/components/store/FloatingCart";
 const display = Fraunces({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-fraunces", fallback: ["Georgia", "serif"] });
 const body = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const siteTitle = "Warmak A3 — Minimarket Rumahan";
+const siteDesc = "Minimarket Rumahan A3: sembako & kebutuhan harian, pesan cepat via WhatsApp.";
+
 export const metadata: Metadata = {
-  title: "Warmak A3 : Minimarket Rumahan",
-  description: "Warung makan & sembako A3: pesan cepat via WhatsApp.",
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  title: siteTitle,
+  description: siteDesc,
+  openGraph: {
+    title: siteTitle,
+    description: siteDesc,
+    type: "website",
+    locale: "id_ID",
+    siteName: "Warmak A3",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDesc,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

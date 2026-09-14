@@ -7,7 +7,7 @@ import { useEffect } from "react";
 export interface HeroSlide { imageUrl: string; judul: string }
 
 const DEFAULT_SLIDES: HeroSlide[] = [
-  { imageUrl: "", judul: "Sembako lengkap, harga warung" },
+  { imageUrl: "", judul: "Sembako lengkap, harga bersahabat" },
   { imageUrl: "", judul: "Gratis ongkir radius 1 km" },
   { imageUrl: "", judul: "Pesan via WA, bayar tunai atau transfer" },
 ];
