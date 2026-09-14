@@ -72,13 +72,13 @@ export default function HomeMobile() {
         mode === "po" && shown.length === 0 ? (
           <p className="px-4 py-14 text-center text-sm font-bold text-teks2">Belum ada barang PO</p>
         ) : (
-          <div className="grid grid-cols-2 gap-3 px-4 pt-3" key={mode + kat + q}>
+          <div className="grid grid-cols-2 items-stretch gap-2.5 px-4 pt-3 [&>*]:min-w-0" key={mode + kat + q}>
             {shown.map((p, i) => <ProductCard key={p.id} p={p} compact i={i} />)}
           </div>
         )
       ) : null}
       {loading && (
-        <div className="grid grid-cols-2 gap-3 px-4 pt-3">
+        <div className="grid grid-cols-2 items-stretch gap-2.5 px-4 pt-3 [&>*]:min-w-0">
           {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
         </div>
       )}

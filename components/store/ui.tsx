@@ -34,7 +34,9 @@ export function CardSkeleton() {
       <div className="skeleton aspect-square rounded-[12px]" />
       <div className="skeleton mt-2 h-3.5 rounded-full" />
       <div className="skeleton mt-1.5 h-3.5 w-2/3 rounded-full" />
-      <div className="skeleton mt-2 h-10 rounded-[14px]" />
+      <div className="skeleton mt-2 h-5 w-1/2 rounded-full" />
+      <div className="skeleton mt-2 h-6 w-20 rounded-full" />
+      <div className="skeleton mt-2 h-11 rounded-[14px]" />
     </div>
   );
 }

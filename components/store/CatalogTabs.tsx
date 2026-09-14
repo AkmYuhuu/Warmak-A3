@@ -10,7 +10,7 @@ export function CatalogTabs({ mode, onPick, desktop }: { mode: CatalogMode; onPi
     <div className={desktop ? "flex gap-2" : "no-scrollbar flex gap-2 overflow-x-auto px-4 py-2"} role="tablist" aria-label="Menu katalog">
       {items.map((id) => (
         <button key={id} role="tab" aria-selected={mode === id} onClick={() => onPick(id)}
-          className={`pressable shrink-0 rounded-full px-4 py-1.5 text-[13px] font-extrabold ${mode === id ? "bg-primer text-white" : "bg-kartu text-teks ring-1 ring-garis"}`}>
+          className={`pressable flex min-h-[44px] shrink-0 items-center rounded-full px-4 py-2.5 text-[13px] font-extrabold leading-none ${mode === id ? "bg-primer text-white" : "bg-kartu text-teks ring-1 ring-garis"}`}>
           {LABELS[id]}
         </button>
       ))}

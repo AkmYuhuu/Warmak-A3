@@ -60,7 +60,7 @@ export function CategoryChips({ list, aktif, onPick }: { list: string[]; aktif: 
     <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-2" role="tablist" aria-label="Kategori">
       {list.map((c) => (
         <button key={c} role="tab" aria-selected={aktif === c} onClick={() => onPick(c)}
-          className={`pressable h-9 shrink-0 rounded-full px-3.5 text-[13px] font-bold ${aktif === c ? "bg-primer text-white" : "bg-kartu text-teks ring-1 ring-garis"}`}>
+          className={`pressable h-11 shrink-0 rounded-full px-3.5 text-[13px] font-bold leading-none ${aktif === c ? "bg-primer text-white" : "bg-kartu text-teks ring-1 ring-garis"}`}>
           {c}
         </button>
       ))}

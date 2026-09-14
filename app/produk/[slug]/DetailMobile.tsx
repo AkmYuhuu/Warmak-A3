@@ -61,10 +61,10 @@ export default function DetailMobile({ slug }: { slug: string }) {
         {mentok && <p role="status" className="mt-1 text-xs font-bold text-aksen">{MAX_HINT}</p>}
       </div>
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto grid w-full max-w-md grid-cols-2 gap-2 border-t border-garis bg-kartu p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-        <div className="flex items-center justify-center gap-3 rounded-[14px] ring-1 ring-garis">
-          <button onClick={() => setQty((v) => Math.max(1, v - 1))} className="pressable px-3 text-lg tabular-nums" aria-label="Kurangi">−</button>
-          <span className="font-extrabold tabular-nums">{qty}</span>
-          <button onClick={() => setQty((v) => Math.min(Math.max(1, p.stok), v + 1))} className="pressable px-3 text-lg tabular-nums" aria-label="Tambah">+</button>
+        <div className="flex min-h-[44px] items-center justify-center gap-1 rounded-[14px] ring-1 ring-garis">
+          <button onClick={() => setQty((v) => Math.max(1, v - 1))} className="pressable grid h-11 w-11 place-items-center text-lg tabular-nums" aria-label="Kurangi">−</button>
+          <span className="min-w-8 text-center font-extrabold tabular-nums" aria-live="polite">{qty}</span>
+          <button onClick={() => setQty((v) => Math.min(Math.max(1, p.stok), v + 1))} className="pressable grid h-11 w-11 place-items-center text-lg tabular-nums" aria-label="Tambah">+</button>
         </div>
         <button disabled={habis || tutup} aria-disabled={tutup} title={tutup ? "Tutup" : undefined} onClick={tambah}
           className={habis || tutup
