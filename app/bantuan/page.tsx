@@ -20,11 +20,6 @@ export default function BantuanPage() {
         <div className="rounded-[18px] border border-garis bg-kartu p-4 shadow-card">
           <SfxToggle />
         </div>
-        <div className="rounded-[18px] border border-garis bg-kartu p-4 shadow-card">
-          <p className="font-extrabold">Kelola toko</p>
-          <Link href="/admin-sulastri-warmak-A3"
-            className="pressable mt-2 block rounded-[14px] py-3 text-center text-sm font-bold text-teks ring-1 ring-garis">Buka Admin</Link>
-        </div>
       </section>
     </main>
   );

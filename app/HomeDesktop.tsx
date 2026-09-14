@@ -13,6 +13,7 @@ import { CheckoutForm } from "@/components/store/CheckoutForm";
 import { CatalogTabs, type CatalogMode } from "@/components/store/CatalogTabs";
 import { HeroDesktop } from "@/components/store/HeroSlider";
 import ShopBadge from "@/components/store/ShopBadge";
+import BrandLogo from "@/components/store/BrandLogo";
 import SyncBadge from "@/components/system/SyncBadge";
 import { CardSkeleton, SectionHead } from "@/components/store/ui";
 import { rupiah } from "@/lib/wa/template";
@@ -86,7 +87,8 @@ export default function HomeDesktop() {
       <header className="relative overflow-hidden border-b border-garis bg-kartu">
         <div className="kawung pointer-events-none absolute inset-y-0 right-0 w-96 opacity-[0.05]" aria-hidden />
         <div className="relative mx-auto flex max-w-[1200px] items-center gap-4 px-6 py-3">
-          <p className="shrink-0 whitespace-nowrap font-display text-2xl font-bold text-primer">Warmak A3</p>
+          <span className="sr-only">Warmak A3</span>
+          <BrandLogo desktop />
           <ShopBadge big />
           <SyncBadge />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari beras, minyak, telur…"
