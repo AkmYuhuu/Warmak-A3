@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primer: #0c5b40;
+  --color-primer-hover: #083e2c;
+  --color-emas: #c9a227;
+  --color-aksen: #e85d1f;
+  --color-kuning: #ffc531;
+  --color-bg: #faf7ef;
+  --color-kartu: #fffdf8;
+  --color-teks: #14231e;
+  --color-teks2: #5f6f68;
+  --color-garis: #e8dfcc;
+  --color-malam: #083e2c;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #faf7ef; color: #14231e;
+  font-family: var(--font-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+.font-display { font-family: var(--font-fraunces), Georgia, "Times New Roman", serif; }
+
+/* Tekstur khas */
+.kawung {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5'%3E%3Cellipse cx='36' cy='18' rx='14' ry='18'/%3E%3Cellipse cx='36' cy='54' rx='14' ry='18'/%3E%3Cellipse cx='18' cy='36' rx='18' ry='14'/%3E%3Cellipse cx='54' cy='36' rx='18' ry='14'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 72px 72px;
+}
+.hero-leaf { background: linear-gradient(120deg, #083e2c 0%, #0c5b40 100%); }
+.gold-rule { width: 24px; height: 2px; background: #c9a227; border-radius: 999px; }
+.shadow-card { box-shadow: 0 1px 2px rgba(20, 35, 30, 0.06), 0 8px 24px rgba(20, 35, 30, 0.07); }
+.shadow-float { box-shadow: 0 12px 40px rgba(8, 62, 44, 0.18); }
+.shadow-btn { box-shadow: 0 4px 14px rgba(12, 91, 64, 0.25); }
+
+/* Motion: easing tunggal, hanya transform+opacity */
+.pressable { transition: transform 150ms var(--ease), filter 150ms var(--ease); }
+.pressable:active { transform: scale(0.97); filter: brightness(0.92); }
+
+.anim-200 { transition: transform 200ms var(--ease), opacity 200ms var(--ease); }
+.anim-240 { transition: transform 240ms var(--ease), opacity 240ms var(--ease); }
+.anim-300 { transition: transform 300ms var(--ease), opacity 300ms var(--ease); }
+
+.fade-up { animation: fadeUp 240ms var(--ease) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.stagger { opacity: 0; animation: fadeUp 240ms var(--ease) forwards; animation-delay: var(--d, 0ms); }
+
+.sheet-in { animation: sheetIn 250ms var(--ease) both; }
+@keyframes sheetIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.drawer-in { animation: drawerIn 250ms var(--ease) both; }
+@keyframes drawerIn { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: none; } }
+.modal-in { animation: modalIn 250ms var(--ease) both; }
+@keyframes modalIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+.backdrop-in { animation: backdropIn 200ms var(--ease) both; }
+@keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Pasangan OUT (200-220ms, easing tunggal, transform+opacity) */
+.sheet-out { animation: sheetOut 220ms var(--ease) both; }
+@keyframes sheetOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(24px); } }
+.drawer-out { animation: drawerOut 220ms var(--ease) both; }
+@keyframes drawerOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(32px); } }
+.modal-out { animation: modalOut 220ms var(--ease) both; }
+@keyframes modalOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.98); } }
+.backdrop-out { animation: backdropOut 200ms var(--ease) both; }
+@keyframes backdropOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* Toast/hint, banner, floating: fade + geser */
+.toast-in { animation: toastIn 200ms var(--ease) both; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.toast-out { animation: toastOut 200ms var(--ease) both; }
+@keyframes toastOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(6px); } }
+.banner-in { animation: bannerIn 200ms var(--ease) both; }
+@keyframes bannerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.banner-out { animation: bannerOut 200ms var(--ease) both; }
+@keyframes bannerOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-8px); } }
+.float-in { animation: floatIn 200ms var(--ease) both; }
+@keyframes floatIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.float-out { animation: floatOut 200ms var(--ease) both; }
+@keyframes floatOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px); } }
+
+.pop { animation: pop 200ms var(--ease) both; transform-origin: center; }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.25); } 100% { transform: scale(1); } }
+
+/* Pulse ring sekali saat tambah (transform+opacity; mati saat reduced-motion) */
+.pulse-once { position: relative; }
+.pulse-once::after {
+  content: ""; position: absolute; inset: 0; border-radius: 18px;
+  border: 2px solid #e85d1f; pointer-events: none;
+  animation: pulseRing 500ms var(--ease) both;
+}
+@keyframes pulseRing { from { opacity: 0.9; transform: scale(1); } to { opacity: 0; transform: scale(1.05); } }
+
+.skeleton { position: relative; overflow: hidden; background: #efe7d3; }
+.skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 253, 248, 0.9) 50%, transparent 80%);
+  animation: shimmer 1200ms var(--ease) infinite;
+}
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Desktop saja: kursor tangan di kontrol klik; Habis/disabled tetap not-allowed */
+@media (hover:hover) and (pointer:fine) {
+  button, a, [role="button"], summary { cursor: pointer; }
+  button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+  /* Hover khusus tombol Tambah/Keranjang: angkat 2px + gelap + shadow */
+  .btn-lift { transition: transform 200ms var(--ease), filter 200ms var(--ease), box-shadow 200ms var(--ease); }
+  .btn-lift:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(0.94); box-shadow: 0 8px 20px rgba(12, 91, 64, 0.28); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .stagger, .skeleton::after { opacity: 1; }
+  .stagger { animation: none; opacity: 1; }
+  .skeleton::after { display: none; }
+  html { scroll-behavior: auto; }
+}
