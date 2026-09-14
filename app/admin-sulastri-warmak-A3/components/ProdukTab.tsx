@@ -42,7 +42,7 @@ export default function ProdukTab({ filtered, cats, q, setQ, kat, setKat, menipi
         <select value={kat} onChange={(e) => setKat(e.target.value)} className={`${input} hidden md:block`} aria-label="Kategori">
           {cats.map((c) => <option key={c}>{c}</option>)}
         </select>
-        <button onClick={() => setEditorFor("baru")} className="pressable rounded-[14px] bg-primer px-4 py-2.5 text-sm font-extrabold text-white shadow-btn">+ Produk</button>
+        <button onClick={() => setEditorFor("baru")} className="pressable w-full rounded-[14px] bg-primer px-4 py-3 text-[13px] font-extrabold text-white shadow-btn md:w-auto md:py-2.5 md:text-sm">+ Produk</button>
       </div>
       <div className="no-scrollbar mt-2 flex gap-2 overflow-x-auto md:hidden" role="tablist" aria-label="Kategori">
         {cats.map((c) => (
