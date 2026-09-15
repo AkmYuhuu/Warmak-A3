@@ -2,16 +2,16 @@
    Didaftarkan hanya dari layout admin dengan scope /admin-sulastri-warmak-A3/, sehingga halaman
    katalog tidak pernah dikendalikan SW ini. Lapisan kedua: handler fetch
    di bawah mengabaikan semua request di luar path admin. */
-const CACHE = "warmak-admin-v2";
-const PRECACHE = ["/admin-sulastri-warmak-A3/", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/apple-touch-icon.png"];
+const CACHE = "warmak-admin-v3";
+const PRECACHE = ["/admin-sulastri-warmak-A3", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/apple-touch-icon.png"];
 
+const ADMIN_PATH = "/admin-sulastri-warmak-A3";
 function isAdminRequest(url) {
   const p = url.pathname;
-  return (
-    p.startsWith("/admin-sulastri-warmak-A3") ||
-    p.startsWith("/icons/") ||
-    p.startsWith("/_next/static/")
-  );
+  // Samakan dengan scope regist SW: cocok utk path admin tepat + subpath
+  // (cth: /admin-sulastri-warmak-A3/portal/new), tapi tidak untuk prefix lain.
+  const inAdmin = p === ADMIN_PATH || p.startsWith(ADMIN_PATH + "/");
+  return inAdmin || p.startsWith("/icons/") || p.startsWith("/_next/static/");
 }
 
 self.addEventListener("install", (event) => {
@@ -50,6 +50,6 @@ self.addEventListener("fetch", (event) => {
         }
         return res;
       })
-      .catch(() => caches.match(request).then((hit) => hit || caches.match("/admin-sulastri-warmak-A3/"))),
+      .catch(() => caches.match(request).then((hit) => hit || caches.match("/admin-sulastri-warmak-A3"))),
   );
 });
