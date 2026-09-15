@@ -11,39 +11,17 @@ type Agg = Awaited<ReturnType<typeof aggregate>> | null;
 
 const JAM_CLS = "rounded-[14px] border border-garis bg-bg px-3 py-2.5 text-sm outline-none focus:border-primer";
 
-// Normalisasi ke "JJ:MM" 24 jam. Terima "8", "13", "800", "1300", "8:00", "8.00".
-function normJam(v: string): string | null {
-  const t = v.trim();
-  if (/^([01]\d|2[0-3]):[0-5]\d$/.test(t)) return t;
-  const d = t.replace(/[^\d]/g, "");
-  let h = -1, m = 0;
-  if (d.length >= 1 && d.length <= 2) h = Number(d);
-  else if (d.length === 3) { h = Number(d.slice(0, 1)); m = Number(d.slice(1)); }
-  else if (d.length === 4) { h = Number(d.slice(0, 2)); m = Number(d.slice(2)); }
-  else return null;
-  if (h < 0 || h > 23 || m > 59) return null;
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-}
-
-// Input jam teks 24 jam (selalu tampil "13:00", tak ikut locale HP). Simpan saat blur/Enter.
+// Pemilih jam bawaan browser (ada picker-nya, tak perlu ketik manual).
+// Nilai tetap "JJ:MM" 24 jam, langsung simpan saat dipilih.
 function JamInput({ label, value, onCommit }: { label: string; value: string; onCommit: (v: string) => void }) {
-  const [draft, setDraft] = useState(value);
-  const [focus, setFocus] = useState(false);
-  useEffect(() => { if (!focus) setDraft(value); }, [value, focus]);
-  const commit = () => {
-    const n = normJam(draft);
-    if (!n) { alert("Format jam: JJ:MM 24 jam, contoh 08:00 atau 13:00."); setDraft(value); return; }
-    if (n !== value) onCommit(n);
-    else setDraft(value);
-  };
   return (
-    <label className="text-xs font-bold">{label} <input value={focus ? draft : value}
-      onChange={(e) => setDraft(e.target.value)}
-      onFocus={() => { setDraft(value); setFocus(true); }}
-      onBlur={() => { setFocus(false); commit(); }}
-      onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-      placeholder="08:00" inputMode="numeric" aria-label={`Jam ${label}`}
-      className={`${JAM_CLS} ml-1 w-24 tabular-nums`} /></label>
+    <label className="text-xs font-bold">{label} <input type="time" value={value}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (/^([01]\d|2[0-3]):[0-5]\d$/.test(v) && v !== value) onCommit(v);
+      }}
+      aria-label={`Jam ${label}`}
+      className={`${JAM_CLS} ml-1 w-32 tabular-nums`} /></label>
   );
 }
 
