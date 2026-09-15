@@ -11,17 +11,34 @@ type Agg = Awaited<ReturnType<typeof aggregate>> | null;
 
 const JAM_CLS = "rounded-[14px] border border-garis bg-bg px-3 py-2.5 text-sm outline-none focus:border-primer";
 
-// Pemilih jam bawaan browser (ada picker-nya, tak perlu ketik manual).
-// Nilai tetap "JJ:MM" 24 jam, langsung simpan saat dipilih.
+// Dropdown jam 00-23 + menit 00-59 (tampilan selalu 24 jam: 13:00 dst).
+// Sengaja tidak pakai input type="time" karena tampilannya ikut locale
+// OS/browser (di Windows EN jadi AM/PM). Nilai tetap "JJ:MM", simpan saat dipilih.
+function parseJam(v: string): [string, string] {
+  const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(v.trim());
+  if (!m) return ["08", "00"];
+  return [m[1], m[2]];
+}
+const JAM_LIST = Array.from({ length: 24 }, (_, h) => String(h).padStart(2, "0"));
+const MENIT_LIST = Array.from({ length: 60 }, (_, m) => String(m).padStart(2, "0"));
 function JamInput({ label, value, onCommit }: { label: string; value: string; onCommit: (v: string) => void }) {
+  const [hh, mm] = parseJam(value);
+  const commit = (nh: string, nm: string) => {
+    const v = `${nh}:${nm}`;
+    if (v !== value) onCommit(v);
+  };
   return (
-    <label className="text-xs font-bold">{label} <input type="time" value={value}
-      onChange={(e) => {
-        const v = e.target.value;
-        if (/^([01]\d|2[0-3]):[0-5]\d$/.test(v) && v !== value) onCommit(v);
-      }}
-      aria-label={`Jam ${label}`}
-      className={`${JAM_CLS} ml-1 w-32 tabular-nums`} /></label>
+    <span className="text-xs font-bold">{label}{" "}
+      <select value={hh} onChange={(e) => commit(e.target.value, mm)} aria-label={`Jam ${label}`}
+        className={`${JAM_CLS} ml-1 w-20 tabular-nums`}>
+        {JAM_LIST.map((h) => <option key={h} value={h}>{h}</option>)}
+      </select>
+      <span className="mx-1 font-extrabold" aria-hidden>:</span>
+      <select value={mm} onChange={(e) => commit(hh, e.target.value)} aria-label={`Menit ${label}`}
+        className={`${JAM_CLS} w-20 tabular-nums`}>
+        {MENIT_LIST.map((m) => <option key={m} value={m}>{m}</option>)}
+      </select>
+    </span>
   );
 }
 
