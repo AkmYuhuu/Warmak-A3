@@ -18,19 +18,23 @@ export default function DetailMobile({ slug }: { slug: string }) {
   const { masuk, pulse, fire } = useAddConfirm();
   const [loadErr, setLoadErr] = useState<string | null>(null);
   const { add } = useCart();
+  const shopOpen = useShopStatus().open;
   useEffect(() => {
     fetchProductBySlug(slug)
-      .then((r) => setP(r ?? null))
+      .then((r) => {
+        if (!r) setLoadErr("Produk tidak ditemukan.");
+        else setP(r);
+      })
       .catch((e) => setLoadErr(e instanceof Error ? e.message : "Gagal memuat produk."));
   }, [slug]);
-  if (loadErr && !p) return <main className="mx-auto max-w-md p-4"><p role="alert" className="rounded-[18px] border border-garis bg-kartu p-6 text-center text-sm font-bold text-[#DC2626]">{loadErr} <button onClick={() => window.location.reload()} className="mt-2 block w-full rounded-[14px] bg-primer py-2.5 text-sm font-extrabold text-white">Muat ulang</button></p></main>;
+  if (loadErr && !p) return <main className="mx-auto max-w-md p-4"><p role="alert" className="rounded-[18px] border border-garis bg-kartu p-6 text-center text-sm font-bold text-[#DC2626]">{loadErr} <Link href="/" className="mt-2 block w-full rounded-[14px] bg-primer py-2.5 text-sm font-extrabold text-white">Kembali belanja</Link></p></main>;
   if (!p) return <main className="mx-auto max-w-md p-4"><CardSkeleton /></main>;
   const habis = p.stok === 0;
   const now = new Date();
   const diskon = isDiscountActive(p, now);
   const harga = priceOf(p, now);
   const mentok = !habis && qty >= p.stok;
-  const tutup = !useShopStatus().open;
+  const tutup = !shopOpen;
   function tambah() {
     if (tutup) return;
     add({ productId: p!.id, nama: p!.nama, harga, qty, stok: p!.stok, isPO: p!.isPO });
