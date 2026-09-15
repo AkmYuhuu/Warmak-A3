@@ -13,8 +13,17 @@ export default function AdminPwa() {
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
-    const scope = window.location.pathname.startsWith("/a") ? "/a" : "/admin-sulastri-warmak-A3/";
-    navigator.serviceWorker.register("/sw-admin.js", { scope }).catch(() => null);
+    const SCOPE = "/admin-sulastri-warmak-A3/";
+    // Bersihkan SW lama yang scope-nya nyasar ke /a (sisa kemarin ngantuk).
+    navigator.serviceWorker
+      .getRegistrations?.()
+      .then((regs) => {
+        regs.forEach((r) => {
+          if (r.scope.endsWith("/a") || r.scope.endsWith("/a/")) r.unregister().catch(() => null);
+        });
+      })
+      .catch(() => null);
+    navigator.serviceWorker.register("/sw-admin.js", { scope: SCOPE }).catch(() => null);
   }, []);
 
   useEffect(() => {

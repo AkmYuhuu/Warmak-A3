@@ -1,12 +1,12 @@
 // Manifest PWA khusus dashboard admin. Katalog toko tidak memuat manifest ini.
 export async function GET() {
   const manifest = {
-    id: "/a",
+    id: "/admin-sulastri-warmak-A3/",
     name: "Warmak A3 Admin",
     short_name: "Warmak A3",
     description: "Dashboard admin Warmak A3: produk, stok, dan pesanan.",
-    start_url: "/a",
-    scope: "/a",
+    start_url: "/admin-sulastri-warmak-A3/",
+    scope: "/admin-sulastri-warmak-A3/",
     display: "standalone",
     dir: "ltr",
     lang: "id",

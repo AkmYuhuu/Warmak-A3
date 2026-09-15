@@ -1,15 +1,13 @@
-/* Service worker khusus dashboard admin (/a).
-   Didaftarkan hanya dari layout admin dengan scope /a, sehingga halaman
+/* Service worker khusus dashboard admin (/admin-sulastri-warmak-A3).
+   Didaftarkan hanya dari layout admin dengan scope /admin-sulastri-warmak-A3/, sehingga halaman
    katalog tidak pernah dikendalikan SW ini. Lapisan kedua: handler fetch
    di bawah mengabaikan semua request di luar path admin. */
-const CACHE = "warmak-admin-v1";
-const PRECACHE = ["/a", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/apple-touch-icon.png"];
+const CACHE = "warmak-admin-v2";
+const PRECACHE = ["/admin-sulastri-warmak-A3/", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/apple-touch-icon.png"];
 
 function isAdminRequest(url) {
   const p = url.pathname;
   return (
-    p === "/a" ||
-    p.startsWith("/a/") ||
     p.startsWith("/admin-sulastri-warmak-A3") ||
     p.startsWith("/icons/") ||
     p.startsWith("/_next/static/")
@@ -52,6 +50,6 @@ self.addEventListener("fetch", (event) => {
         }
         return res;
       })
-      .catch(() => caches.match(request).then((hit) => hit || caches.match("/a"))),
+      .catch(() => caches.match(request).then((hit) => hit || caches.match("/admin-sulastri-warmak-A3/"))),
   );
 });
